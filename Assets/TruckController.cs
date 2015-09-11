@@ -4,7 +4,8 @@ using System.Collections;
 public class TruckController : MonoBehaviour {
 	public float Acceleration = 1000;
 	bool right, left, forward;
-	Vector3 speed;
+	[HideInInspector]
+	public Vector3 speed;
 	Vector3 direction;
 
 	// Use this for initialization

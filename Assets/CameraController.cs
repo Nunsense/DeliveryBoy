@@ -1,22 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.Cameras;
 
 public class CameraController : MonoBehaviour {
+	public float smoothing = 15f;
+	private GameObject truck;
+	private Transform truckTransform;
+	Vector3 offset;
 
-	public float dampTime = 0.15f;
-	private Vector3 velocity = Vector3.zero;
-	public Transform target;
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		if (target)
-		{
-			Vector3 point = Camera.main.WorldToViewportPoint(target.position);
-			print (point.ToString());
-			Vector3 delta = target.position - Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z)); //(new Vector3(0.5, 0.5, point.z));
-			Vector3 destination = transform.position + delta;
-		}
-		
+	void Start () {
+		truck = GameObject.FindGameObjectWithTag ("Truck");
+		truckTransform = truck.transform;
+		offset = transform.position - truckTransform.position;
 	}
+
+	void LateUpdate() {
+		MoveCameraPos();
+	}
+
+	void MoveCameraPos () {
+		Vector3 truckPos = truckTransform.position + offset;
+		Vector3 targetCamPos = new Vector3 (truckPos.x, transform.position.y, truckPos.z);
+		transform.position = Vector3.Lerp (transform.position, targetCamPos, smoothing * Time.deltaTime);
+	}
+
 }
