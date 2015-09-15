@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityStandardAssets.Cameras;
 
 public class CameraController : MonoBehaviour {
 	public float smoothing = 15f;
