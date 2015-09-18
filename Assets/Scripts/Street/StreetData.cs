@@ -2,15 +2,6 @@
 using System.Collections;
 
 public class StreetData : MonoBehaviour {
-	
-	void Start () {
-	
-	}
-	
-	void Update () {
-	
-	}
-	
 	public Vector3 GetStreetVector(int lane, Vector3 direction) { // Allow multiple lanes streets
 		float value = lane * 27;
 		
