@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class CrossOptions : MonoBehaviour {
 	[System.Serializable]
 	public class Options {
-		public bool A, B, C, D;
+		public bool N, E, S, W;
 	}
 	public Options TurningOptions;
 

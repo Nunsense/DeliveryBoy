@@ -11,6 +11,7 @@ public class TruckController : MonoBehaviour {
 	private bool N, W, E, S;
 	private Vector3 direction;
 	private bool turning;
+	private CrossOptions currentOptions;
 
 	void Start () {
 		direction = Vector3.forward;
@@ -19,22 +20,23 @@ public class TruckController : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-		Quaternion orientation = transform.rotation;//
+		Quaternion orientation = transform.rotation;
 		Speed *= 0.8f;
-
+		
 		if (Input.GetKey (KeyCode.UpArrow)) {
 			Speed += Acceleration * direction;
 		}
-		transform.position += Speed * Time.deltaTime;
 		
 		if (!turning) {
+			transform.position += Speed * Time.deltaTime;
+			
 			//right
-			if (Input.GetKeyDown(KeyCode.RightArrow)) {
+			if (Input.GetKeyDown(KeyCode.RightArrow) && CanTurn(true)) {
 				turning = true;
 				StartCoroutine(Turn(90));
 			}
 			//left
-			if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown(KeyCode.LeftArrow) && CanTurn(false)) {
 				turning = true;
 				StartCoroutine(Turn(270));
 			}
@@ -44,56 +46,78 @@ public class TruckController : MonoBehaviour {
 	}
 
 	void SetCardinalDirection () {
-		E = (direction.z == 1) ? true : false;
-		W = (direction.z == -1) ? true : false;
-		S = (direction.x == 1) ? true : false;
-		N = (direction.x == -1) ? true : false;
+		E = direction.z == 1;
+		W = direction.z == -1;
+		S = direction.x == 1;
+		N = direction.x == -1;
+	}
+
+	bool CanTurn(bool right) {
+		if (currentOptions != null) {
+			return right && 
+					(E && currentOptions.TurningOptions.S) ||
+					(N && currentOptions.TurningOptions.E) ||
+					(W && currentOptions.TurningOptions.N) ||
+					(S && currentOptions.TurningOptions.W) ||
+				  !right &&
+					(E && currentOptions.TurningOptions.N) ||
+					(N && currentOptions.TurningOptions.W) ||
+					(W && currentOptions.TurningOptions.S) ||
+					(S && currentOptions.TurningOptions.E);
+		}
+		return false;
 	}
 
 	void OnTriggerEnter(Collider other){
 		if (other.gameObject.tag.Equals("Corner")) {
-			CrossOptions.Options turningOptions = other.GetComponent<CrossOptions> ().TurningOptions;
-
-			print ("E = " + E);
-			print ("W = " + W);
-			print ("S = " + S);
-			print ("N = " + N);
+			currentOptions = other.GetComponent<CrossOptions> ();			
 		}
 	}
-
-	void OnTriggerExit(Collider other){
+	
+	void OnTriggerEexit(Collider other){
 		if (other.gameObject.tag.Equals("Corner")) {
-			CrossOptions.Options turningOptions = other.GetComponent<CrossOptions> ().TurningOptions;
-
-			print ("E = " + E);
-			print ("W = " + W);
-			print ("S = " + S);
-			print ("N = " + N);
+			currentOptions = null;			
 		}
+	}
+	
+	Vector3 TurnFinalPosition(Vector3 targetDirection) {
+		if (currentOptions != null) {
+			Vector3 targetPosition = currentOptions.gameObject.transform.position;
+			targetPosition.x += targetDirection.x * 10f;
+			targetPosition.z += targetDirection.z * 10f;
+			targetPosition.y = 0;
+			return targetPosition;
+		}
+
+		return transform.position;
 	}
 
 	IEnumerator Turn(float angle) {
 		Quaternion rotation = Quaternion.Euler (0, angle, 0);
 		
 		Quaternion targetOrientation = transform.rotation * rotation;
-		Vector3 targetDirection = rotation * direction;
+		Vector3 targetDirection = (rotation * direction).normalized;
+		Vector3 targetPosition = TurnFinalPosition(targetDirection);
 		
-		float startTime = Time.fixedTime;
+		float startTime = Time.time;
 		float scale = TurnSpeedScale;
 		float turnTime = TurnTime;
 		float delta = 0;
 		
-		while (Time.fixedTime - startTime < turnTime) {
-			delta = (Time.fixedTime - startTime) / turnTime;
+		while (Time.time - startTime < turnTime) {
+			delta = (Time.time - startTime) / turnTime;
 
-			transform.rotation = Quaternion.Slerp (transform.rotation, targetOrientation, delta);
+			transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, targetOrientation, delta);
 			direction = Vector3.Slerp(direction, targetDirection, delta);
+			transform.position = Vector3.Slerp(transform.position, targetPosition, delta);
 			
 			yield return new WaitForSeconds(0.1f);
 		}
 		transform.rotation = targetOrientation;
 		direction = targetDirection.normalized;
+		transform.position = targetPosition;
 		turning = false;
+		currentOptions = null;
 		SetCardinalDirection ();
 	}
 
