@@ -7,20 +7,18 @@ public class TruckController : MonoBehaviour {
 	public float TurnSpeedScale = 10;
 	public float TurnTime = 2.3f;
 	
-	StreetData currentStreet;
-	bool right, left, forward;
-	Vector3 direction;
-	bool turning;
+	private StreetData currentStreet;
+	private bool N, W, E, S;
+	private Vector3 direction;
+	private bool turning;
 
 	void Start () {
-		right = false;
-		left = false;
-		forward = true;
 		direction = Vector3.forward;
 		turning = false;
+		SetCardinalDirection ();
 	}
 	
-	void Update () {
+	void FixedUpdate () {
 		Quaternion orientation = transform.rotation;//
 		Speed *= 0.8f;
 
@@ -30,11 +28,13 @@ public class TruckController : MonoBehaviour {
 		transform.position += Speed * Time.deltaTime;
 		
 		if (!turning) {
-			if (Input.GetKey(KeyCode.RightArrow) && right) {
+			//right
+			if (Input.GetKeyDown(KeyCode.RightArrow)) {
 				turning = true;
 				StartCoroutine(Turn(90));
 			}
-			if (Input.GetKey(KeyCode.LeftArrow) && left) {
+			//left
+			if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 				turning = true;
 				StartCoroutine(Turn(270));
 			}
@@ -43,31 +43,33 @@ public class TruckController : MonoBehaviour {
 		}
 	}
 
+	void SetCardinalDirection () {
+		E = (direction.z == 1) ? true : false;
+		W = (direction.z == -1) ? true : false;
+		S = (direction.x == 1) ? true : false;
+		N = (direction.x == -1) ? true : false;
+	}
+
 	void OnTriggerEnter(Collider other){
-		if (other.gameObject.tag.Equals("Street")) {
-			right = false;
-			left = false;
-			forward = true;
-
-			ChangeCurrentStreetColor(Color.white);
-			currentStreet = other.GetComponent<StreetData> ();
-			ChangeCurrentStreetColor(Color.red);
-		}
 		if (other.gameObject.tag.Equals("Corner")) {
-			right = true;
-			left = true;
-			forward = true;
+			CrossOptions.Options turningOptions = other.GetComponent<CrossOptions> ().TurningOptions;
 
-			ChangeCurrentStreetColor(Color.white);
-			currentStreet = other.GetComponent<StreetData> ();
-			ChangeCurrentStreetColor(Color.blue);
+			print ("E = " + E);
+			print ("W = " + W);
+			print ("S = " + S);
+			print ("N = " + N);
 		}
 	}
 
-	void ChangeCurrentStreetColor(Color color) {
-		if (!currentStreet) return;
-		Material mat = currentStreet.gameObject.GetComponent<MeshRenderer>().materials[0];
-		mat.color = color;
+	void OnTriggerExit(Collider other){
+		if (other.gameObject.tag.Equals("Corner")) {
+			CrossOptions.Options turningOptions = other.GetComponent<CrossOptions> ().TurningOptions;
+
+			print ("E = " + E);
+			print ("W = " + W);
+			print ("S = " + S);
+			print ("N = " + N);
+		}
 	}
 
 	IEnumerator Turn(float angle) {
@@ -76,13 +78,13 @@ public class TruckController : MonoBehaviour {
 		Quaternion targetOrientation = transform.rotation * rotation;
 		Vector3 targetDirection = rotation * direction;
 		
-		float startTime = Time.time;
+		float startTime = Time.fixedTime;
 		float scale = TurnSpeedScale;
 		float turnTime = TurnTime;
 		float delta = 0;
 		
-		while (Time.time - startTime < turnTime) {
-			delta = (Time.time - startTime) / turnTime;
+		while (Time.fixedTime - startTime < turnTime) {
+			delta = (Time.fixedTime - startTime) / turnTime;
 
 			transform.rotation = Quaternion.Slerp (transform.rotation, targetOrientation, delta);
 			direction = Vector3.Slerp(direction, targetDirection, delta);
@@ -90,8 +92,9 @@ public class TruckController : MonoBehaviour {
 			yield return new WaitForSeconds(0.1f);
 		}
 		transform.rotation = targetOrientation;
-		direction = targetDirection;
+		direction = targetDirection.normalized;
 		turning = false;
+		SetCardinalDirection ();
 	}
 
 }
