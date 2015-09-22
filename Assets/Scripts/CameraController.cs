@@ -26,8 +26,8 @@ public class CameraController : MonoBehaviour {
 
 	void MoveCameraPos () {
 		if (cameraTarget) {
-			Vector3 truckPos = truckTransform.position + offset;
-			Vector3 targetCamPos = new Vector3 (truckPos.x, transform.position.y, truckPos.z);
+			Vector3 targetPos = truckTransform.position + offset;
+			Vector3 targetCamPos = new Vector3 (targetPos.x, transform.position.y, targetPos.z);
 			transform.position = Vector3.Lerp (transform.position, targetCamPos, smoothing * Time.deltaTime);
 		}
 	}//move Camera Pos

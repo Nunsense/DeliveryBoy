@@ -6,7 +6,7 @@ public class TruckController : MonoBehaviour {
 	public GameObject bonus;
 
 	//Handling Car
-	public float standingThreshold;
+	public float standingThreshold = 85;
 	public float Acceleration = 10f;
 	[HideInInspector] public Vector3 speed;
 	private float TurnAcceleration = 120f;
@@ -26,7 +26,6 @@ public class TruckController : MonoBehaviour {
 		
 		if (Input.GetKey (KeyCode.UpArrow)) {
 			speed += Acceleration * direction;
-			print (speed);
 		}
 		
 		//right
@@ -43,12 +42,14 @@ public class TruckController : MonoBehaviour {
 		
 		direction = transform.forward;
 		direction.y = 0;
+
+		print (IsStanding());
 	}
 
 	public bool IsStanding () {
-		Vector3 pinAngle = transform.eulerAngles;
-		float tiltX = Mathf.Abs (pinAngle.x);
-		float tiltZ = Mathf.Abs (pinAngle.z);
+		Vector3 carAngle = transform.eulerAngles;
+		float tiltX = Mathf.Abs (carAngle.x);
+		float tiltZ = Mathf.Abs (carAngle.z);
 		
 		if (tiltX > standingThreshold || tiltZ > standingThreshold) {
 			return false;
@@ -58,9 +59,8 @@ public class TruckController : MonoBehaviour {
 
 
 	void OnTriggerEnter(Collider other){
-
 	}
 	
-	void OnTriggerEexit(Collider other){
+	void OnTriggerExit(Collider other){
 	}
 }
