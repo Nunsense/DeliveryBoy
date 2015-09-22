@@ -7,6 +7,7 @@ TagManager:
   - Street
   - Corner
   - Truck
+  - Bonus
   layers:
   - Default
   - TransparentFX
