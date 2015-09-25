@@ -6,8 +6,10 @@ public class TruckController : MonoBehaviour {
 	//Handling Car
 	public float tiltThreshold = 85;
 	public float Acceleration = 10f;
-	[HideInInspector] public Vector3 speed;
+	[SerializeField] float speed;
+	Vector3 frontOfTheCar;
 	private float TurnAcceleration = 150f;
+	Rigidbody rb;
 	[SerializeField] private Vector3 direction;
 	private bool turning;
 	private bool isStanding;
@@ -15,10 +17,17 @@ public class TruckController : MonoBehaviour {
 	private bool onGround;
 	private float flyingTime = 2f;
 
+	public Transform motoTransform;
+
 	//Street Data
 	private StreetData currentStreet;
 
+	void Awake() {
+		rb = GetComponent<Rigidbody> ();
+	}
+	
 	void Start () {
+		frontOfTheCar = new Vector3(0, 0, 1f);
 		direction = Vector3.forward;
 		turning = false;
 		isStanding = true;
@@ -26,13 +35,15 @@ public class TruckController : MonoBehaviour {
 		onGround = false;
 	}
 	
-	void Update () {
+	void FixedUpdate () {
 		IsStanding();
 
-		speed *= 0.8f;
+//		speed *= 0.8f;
 		
 		if (isStanding && onGround) {
-			speed += Acceleration * direction;
+			if (speed < 3000) {
+				speed += Acceleration ;//* direction;
+			}
 
 			//right
 			if (Input.GetKey(KeyCode.RightArrow)) {
@@ -43,10 +54,11 @@ public class TruckController : MonoBehaviour {
 			if (Input.GetKey(KeyCode.LeftArrow)) {
 				transform.Rotate(Vector3.up, -TurnAcceleration * Time.deltaTime);
 			}
-
-			transform.position += speed * Time.deltaTime;
+//			transform.position += speed * Time.deltaTime;
+			
+			rb.AddForceAtPosition(direction * speed * Time.fixedDeltaTime, motoTransform.position, ForceMode.Acceleration);// = speed * Time.deltaTime;
 		}//if standing and not flipped
-		
+//		rb.mo
 		direction = transform.forward;
 		direction.y = 0;
 	}

@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour {
 	Vector3 offset;
 
 	void Start () {
-		GetTarget ("Truck");
+		GetTarget ("Player");
 	}
 
 	void LateUpdate() {
