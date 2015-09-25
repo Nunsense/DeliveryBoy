@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Street
-  - Corner
+  - ground
   - Truck
+  - Bonus
   layers:
   - Default
   - TransparentFX

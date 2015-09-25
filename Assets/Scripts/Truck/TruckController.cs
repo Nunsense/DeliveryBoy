@@ -2,99 +2,97 @@
 using System.Collections;
 
 public class TruckController : MonoBehaviour {
-	public float Acceleration = 1000;
-	[HideInInspector] public Vector3 Speed;
-	public float TurnSpeedScale = 10;
-	public float TurnTime = 2.3f;
-	
-	private StreetData currentStreet;
-	private bool N, W, E, S;
-	private Vector3 direction;
-	private bool turning;
 
+	//Handling Car
+	public float tiltThreshold = 85;
+	public float Acceleration = 10f;
+	[SerializeField] float speed;
+	Vector3 frontOfTheCar;
+	private float TurnAcceleration = 150f;
+	Rigidbody rb;
+	[SerializeField] private Vector3 direction;
+	private bool turning;
+	private bool isStanding;
+	private bool notFlying;
+	private bool onGround;
+	private float flyingTime = 2f;
+
+	public Transform motoTransform;
+
+	//Street Data
+	private StreetData currentStreet;
+
+	void Awake() {
+		rb = GetComponent<Rigidbody> ();
+	}
+	
 	void Start () {
+		frontOfTheCar = new Vector3(0, 0, 1f);
 		direction = Vector3.forward;
 		turning = false;
-		SetCardinalDirection ();
+		isStanding = true;
+		notFlying = false;
+		onGround = false;
 	}
 	
 	void FixedUpdate () {
-		Quaternion orientation = transform.rotation;//
-		Speed *= 0.8f;
+		IsStanding();
 
-		if (Input.GetKey (KeyCode.UpArrow)) {
-			Speed += Acceleration * direction;
-		}
-		transform.position += Speed * Time.deltaTime;
+//		speed *= 0.8f;
 		
-		if (!turning) {
+		if (isStanding && onGround) {
+			if (speed < 3000) {
+				speed += Acceleration ;//* direction;
+			}
+
 			//right
-			if (Input.GetKeyDown(KeyCode.RightArrow)) {
-				turning = true;
-				StartCoroutine(Turn(90));
+			if (Input.GetKey(KeyCode.RightArrow)) {
+				transform.Rotate(Vector3.up, TurnAcceleration * Time.deltaTime);
 			}
-			//left
-			if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-				turning = true;
-				StartCoroutine(Turn(270));
-			}
-	
-			transform.rotation = orientation;
-		}
-	}
-
-	void SetCardinalDirection () {
-		E = (direction.z == 1) ? true : false;
-		W = (direction.z == -1) ? true : false;
-		S = (direction.x == 1) ? true : false;
-		N = (direction.x == -1) ? true : false;
-	}
-
-	void OnTriggerEnter(Collider other){
-		if (other.gameObject.tag.Equals("Corner")) {
-			CrossOptions.Options turningOptions = other.GetComponent<CrossOptions> ().TurningOptions;
-
-			print ("E = " + E);
-			print ("W = " + W);
-			print ("S = " + S);
-			print ("N = " + N);
-		}
-	}
-
-	void OnTriggerExit(Collider other){
-		if (other.gameObject.tag.Equals("Corner")) {
-			CrossOptions.Options turningOptions = other.GetComponent<CrossOptions> ().TurningOptions;
-
-			print ("E = " + E);
-			print ("W = " + W);
-			print ("S = " + S);
-			print ("N = " + N);
-		}
-	}
-
-	IEnumerator Turn(float angle) {
-		Quaternion rotation = Quaternion.Euler (0, angle, 0);
-		
-		Quaternion targetOrientation = transform.rotation * rotation;
-		Vector3 targetDirection = rotation * direction;
-		
-		float startTime = Time.fixedTime;
-		float scale = TurnSpeedScale;
-		float turnTime = TurnTime;
-		float delta = 0;
-		
-		while (Time.fixedTime - startTime < turnTime) {
-			delta = (Time.fixedTime - startTime) / turnTime;
-
-			transform.rotation = Quaternion.Slerp (transform.rotation, targetOrientation, delta);
-			direction = Vector3.Slerp(direction, targetDirection, delta);
 			
-			yield return new WaitForSeconds(0.1f);
-		}
-		transform.rotation = targetOrientation;
-		direction = targetDirection.normalized;
-		turning = false;
-		SetCardinalDirection ();
+			//left
+			if (Input.GetKey(KeyCode.LeftArrow)) {
+				transform.Rotate(Vector3.up, -TurnAcceleration * Time.deltaTime);
+			}
+//			transform.position += speed * Time.deltaTime;
+			
+			rb.AddForceAtPosition(direction * speed * Time.fixedDeltaTime, motoTransform.position, ForceMode.Acceleration);// = speed * Time.deltaTime;
+		}//if standing and not flipped
+//		rb.mo
+		direction = transform.forward;
+		direction.y = 0;
 	}
 
+	public void IsStanding () {
+		Vector3 carAngle = transform.eulerAngles;
+		float tiltX = Mathf.Abs (carAngle.x);
+		float tiltZ = Mathf.Abs (carAngle.z);
+		float oppositeAngle = 360 - tiltThreshold;
+
+		isStanding = tiltX > tiltThreshold && tiltX < oppositeAngle || tiltZ > tiltThreshold && tiltZ < oppositeAngle ? false : true;
+	}
+
+	void OnCollisionStay (Collision coll) {
+		if (coll.gameObject.tag == "ground") {
+			notFlying = true;
+			onGround = true;
+			print ("I'm Riding !");
+		}
+	}
+
+	void OnCollisionExit (Collision coll) {
+		if (coll.gameObject.tag == "ground" && onGround) {
+			Invoke ("KeepsFlying", flyingTime);
+		}
+	}
+
+	public void KeepsFlying () {
+		onGround = false;
+		notFlying = false;
+		print ("Psss.. Master? I keep Flying");
+	}
 }
+
+
+
+
