@@ -101,58 +101,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 StartSound();
             }
 
-            if (m_StartedSound)
-            {
-                // The pitch is interpolated between the min and max values, according to the car's revs.
-                float pitch = ULerp(lowPitchMin, lowPitchMax, m_CarController.Revs);
-
-                // clamp to minimum pitch (note, not clamped to max for high revs while burning out)
-                pitch = Mathf.Min(lowPitchMax, pitch);
-
-                if (engineSoundStyle == EngineAudioOptions.Simple)
-                {
-                    // for 1 channel engine sound, it's oh so simple:
-                    m_HighAccel.pitch = pitch*pitchMultiplier*highPitchMultiplier;
-                    m_HighAccel.dopplerLevel = useDoppler ? dopplerLevel : 0;
-                    m_HighAccel.volume = 1;
-                }
-                else
-                {
-                    // for 4 channel engine sound, it's a little more complex:
-
-                    // adjust the pitches based on the multipliers
-                    m_LowAccel.pitch = pitch*pitchMultiplier;
-                    m_LowDecel.pitch = pitch*pitchMultiplier;
-                    m_HighAccel.pitch = pitch*highPitchMultiplier*pitchMultiplier;
-                    m_HighDecel.pitch = pitch*highPitchMultiplier*pitchMultiplier;
-
-                    // get values for fading the sounds based on the acceleration
-                    float accFade = Mathf.Abs(m_CarController.AccelInput);
-                    float decFade = 1 - accFade;
-
-                    // get the high fade value based on the cars revs
-                    float highFade = Mathf.InverseLerp(0.2f, 0.8f, m_CarController.Revs);
-                    float lowFade = 1 - highFade;
-
-                    // adjust the values to be more realistic
-                    highFade = 1 - ((1 - highFade)*(1 - highFade));
-                    lowFade = 1 - ((1 - lowFade)*(1 - lowFade));
-                    accFade = 1 - ((1 - accFade)*(1 - accFade));
-                    decFade = 1 - ((1 - decFade)*(1 - decFade));
-
-                    // adjust the source volumes based on the fade values
-                    m_LowAccel.volume = lowFade*accFade;
-                    m_LowDecel.volume = lowFade*decFade;
-                    m_HighAccel.volume = highFade*accFade;
-                    m_HighDecel.volume = highFade*decFade;
-
-                    // adjust the doppler levels
-                    m_HighAccel.dopplerLevel = useDoppler ? dopplerLevel : 0;
-                    m_LowAccel.dopplerLevel = useDoppler ? dopplerLevel : 0;
-                    m_HighDecel.dopplerLevel = useDoppler ? dopplerLevel : 0;
-                    m_LowDecel.dopplerLevel = useDoppler ? dopplerLevel : 0;
-                }
-            }
+        
         }
 
 
