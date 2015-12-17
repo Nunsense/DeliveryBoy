@@ -4,8 +4,8 @@ using System.Collections;
 public class ArrowController : MonoBehaviour {
 
 	// Use this for initialization
-	public GameObject car;
-	public GameObject objective;
+	public Transform car;
+	public Transform objective;
 	Quaternion zero;
 
 	void Start () {
@@ -14,19 +14,11 @@ public class ArrowController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		float deltaZ = objective.transform.position.z - car.transform.position.z;
-		float deltaX = objective.transform.position.x - car.transform.position.x;
-
-		float angle = (Mathf.Atan (deltaZ / deltaX)) * 180 / Mathf.PI;
-		if (angle < 0) {
-			angle = 360 - Mathf.Abs(angle);
-		}
-		float lastAngle = transform.localRotation.z * 180 / Mathf.PI;
-		if (lastAngle < 0) {
-			lastAngle = 360 - Mathf.Abs (lastAngle);
-		}
-		print (lastAngle + "  " + angle + "  " + (angle - lastAngle));
-		transform.RotateAround (transform.position, transform.forward, angle - lastAngle);
+		var heading = transform.position - objective.position;
+		heading.Normalize ();
+		heading.y = 7.8f;
+		//transform.rotation = Quaternion.LookRotation(heading); 
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(heading),Time.deltaTime*3);
 	}
 	
 }

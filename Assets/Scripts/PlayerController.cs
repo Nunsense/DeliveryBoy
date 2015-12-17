@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 		if (status) {
 			// pass the input to the car!
 			float h = CrossPlatformInputManager.GetAxis ("Horizontal");
-			m_Car.Move (h, 1, 1, 0);
+			//m_Car.Move (h, 1, 1, 0);
 		} else {
 			m_Car.Move (0, 0, 0, 0);
 		}
