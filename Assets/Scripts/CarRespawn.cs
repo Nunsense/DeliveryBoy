@@ -5,49 +5,38 @@ public class CarRespawn : MonoBehaviour {
 
 	// Use this for initialization
 	private int counter;
+	private GameObject[] streets;
 	private Vector3 lastPosition, lastPlayerPosition;
-	private float distance = 0.1f;
-	public int playerDistance = 25;
+	private float collisionDistance = 0.1f;
+
 	public int maxStuck = 100;
-	public int minRespawnDistance = 200;
 	public Transform player;
 
-	void Start () {
+	void Awake () {
 		counter = 0;
+		streets = GameObject.FindGameObjectsWithTag ("Street");
 		lastPosition = transform.position;
 		lastPlayerPosition = player.position;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (Vector3.Distance (player.position, lastPlayerPosition) > 0) {
-			if ((Vector3.Distance (transform.position, lastPosition) <= distance) &&
-				(Vector3.Distance (transform.position, player.position) >= distance)) {
-				counter++;
-			} else {
-				counter = 0;
-			}
-			if (counter > maxStuck) {
-				Vector3 position = new Vector3 ();
-				GameObject[] streets = GameObject.FindGameObjectsWithTag ("Street");
-				bool selected = false;
-				while (!selected) {
-					position = streets [Random.Range (0, (streets.Length - 1))].transform.position;
-				//	if (Vector3.Distance (position, player.transform.position) > minRespawnDistance) {
-						selected = true;
-				//	}
-				}
-				transform.position = new Vector3(position.x, transform.position.y,position.z);
+		
+	void OnCollisionStay (Collision other) {
+		if (other.transform != player) {
+			++counter;
+			if (counter >= maxStuck) ResetPosition ();
+		} else  { counter = 0; }
+	}//collision stay
+		
+	void ResetPosition () {
+		
+//		gam newPos = new Vector3 ();
 
-//				var heading = player.position - transform.position ;
-//				heading.Normalize ();
-//				transform.rotation = Quaternion.LookRotation(heading);
+		Transform newPos = streets [Random.Range (0, (streets.Length - 1))].transform;
+		transform.position = new Vector3(newPos.position.x, transform.position.y, newPos.position.z);
+		transform.rotation = Quaternion.LookRotation (newPos.right);
+		counter = 0;
 
-				counter = 0;
-			}
-		}
+		//reset positions
 		lastPosition = transform.position;
 		lastPlayerPosition = player.position;
-	}
-
+	}//reset Position
 }
