@@ -10,19 +10,19 @@ public class CarRespawn : MonoBehaviour {
 	public int playerDistance = 25;
 	public int maxStuck = 100;
 	public int minRespawnDistance = 200;
-	public GameObject player;
+	public Transform player;
 
 	void Start () {
 		counter = 0;
 		lastPosition = transform.position;
-		lastPlayerPosition = player.transform.position;
+		lastPlayerPosition = player.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Vector3.Distance (player.transform.position, lastPlayerPosition) > 0) {
+		if (Vector3.Distance (player.position, lastPlayerPosition) > 0) {
 			if ((Vector3.Distance (transform.position, lastPosition) <= distance) &&
-				(Vector3.Distance (transform.position, player.transform.position) >= distance)) {
+				(Vector3.Distance (transform.position, player.position) >= distance)) {
 				counter++;
 			} else {
 				counter = 0;
@@ -38,10 +38,16 @@ public class CarRespawn : MonoBehaviour {
 				//	}
 				}
 				transform.position = new Vector3(position.x, transform.position.y,position.z);
+
+//				var heading = player.position - transform.position ;
+//				heading.Normalize ();
+//				transform.rotation = Quaternion.LookRotation(heading);
+
 				counter = 0;
 			}
 		}
 		lastPosition = transform.position;
-		lastPlayerPosition = player.transform.position;
+		lastPlayerPosition = player.position;
 	}
+
 }

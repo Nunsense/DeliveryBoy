@@ -5,39 +5,38 @@ using UnityStandardAssets.Vehicles.Car;
 
 public class PlayerController : MonoBehaviour {
 
-	public LevelManager manager;
 	private Vector3 lastPosition;
 	public float distance = 0.5f;
-	private CarController m_Car; // the car controller we want to use
 	private bool status = true;
-	// Use this for initialization
-	void Start () {
-		lastPosition = transform.position;
-	}
+	public LevelManager manager;
+
+	private CarController m_Car; // the car controller we want to use
+
 
 	private void Awake()
 	{
 		// get the car controller
 		m_Car = GetComponent<CarController>();
 	}
-	
+
+
 	private void FixedUpdate()
 	{
-		if (status) {
-			// pass the input to the car!
-			float h = CrossPlatformInputManager.GetAxis ("Horizontal");
-			//m_Car.Move (h, 1, 1, 0);
-		} else {
-			m_Car.Move (0, 0, 0, 0);
-		}
+		// pass the input to the car!
+		float h = Input.GetAxis("Horizontal");
+		float v = Input.GetAxis("Vertical");
+
+		float handbrake = Input.GetAxis("Jump");
+		m_Car.Move(h, v, v, handbrake);
 	}
-	
+
 	void OnCollisionStay(Collision collision) {
 		if (collision.collider.CompareTag("Cop") && 
-		    	(Vector3.Distance(transform.position, lastPosition) <= distance )) {
+			(Vector3.Distance(transform.position, lastPosition) <= distance )) {
 			status = false;
 			manager.Loose();
 		}
+		print ("collisionstay");
 		lastPosition = transform.position;
 	}
 }
