@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class ObjectiveController : MonoBehaviour {
 
+	private int points;
+	public Text pointsField;
 	// Use this for initialization
 	void Start () {
-		Relocate ();
+		points = 0;
+		//Relocate ();
 	}
 	
 	// Update is called once per frame
@@ -13,8 +17,13 @@ public class ObjectiveController : MonoBehaviour {
 	
 	}
 
-	void OnCollisionEnter(Collision collision) {
-		Application.LoadLevel (0);
+	void OnTriggerEnter(Collider collision) {
+		//Application.LoadLevel (0);
+		points ++;
+		pointsField.text = "" + points;
+		PlayerPrefs.SetInt("score", points);
+		print ("Points: " + points);
+		Relocate ();
 	}
 
 	void Relocate(){

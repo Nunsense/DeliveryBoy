@@ -8,6 +8,12 @@ TagManager:
   - Truck
   - Bonus
   - Corner
+  - Cop
+  - GUI
+  - GameUI
+  - RestartUI
+  - Street
+  - Block
   layers:
   - Default
   - TransparentFX
@@ -17,8 +23,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Cars
+  - minimap
   - 
   - 
   - 
