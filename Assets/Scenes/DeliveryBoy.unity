@@ -366,7 +366,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 35199989}
   m_LocalRotation: {x: 0, y: 0.977379, z: 0, w: 0.21149525}
-  m_LocalPosition: {x: 87.4, y: 0.79, z: -13.5}
+  m_LocalPosition: {x: 52.9, y: 0.79, z: -39.6}
   m_LocalScale: {x: 2, y: 1.6, z: 2}
   m_Children:
   - {fileID: 1999373022}
@@ -503,9 +503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f80e17bffee420c8a6dbaf11ccccf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDistance: 50
   maxStuck: 100
-  minRespawnDistance: 200
   player: {fileID: 1199167773}
 --- !u!1 &62266524
 GameObject:
@@ -599,7 +597,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482790, guid: 9decbb5c4e8c84e3bbe0de111aa0c4f7, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.9999966
       objectReference: {fileID: 0}
     - target: {fileID: 482790, guid: 9decbb5c4e8c84e3bbe0de111aa0c4f7, type: 2}
       propertyPath: m_LocalRotation.z
@@ -607,7 +605,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482790, guid: 9decbb5c4e8c84e3bbe0de111aa0c4f7, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.0026181154
       objectReference: {fileID: 0}
     - target: {fileID: 482790, guid: 9decbb5c4e8c84e3bbe0de111aa0c4f7, type: 2}
       propertyPath: m_RootOrder
@@ -1666,15 +1664,15 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &324693477
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 448842, guid: c442d49d7cb364b32a364f88897bb273, type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 324693476}
-  m_LocalRotation: {x: 0, y: 0.0047560125, z: 0, w: 0.99998873}
-  m_LocalPosition: {x: 93.07, y: 0.79, z: -64.2}
+  m_LocalRotation: {x: 0, y: -0.9997807, z: 0, w: 0.020942187}
+  m_LocalPosition: {x: 79.09, y: 0.79, z: 4}
   m_LocalScale: {x: 2, y: 1.6, z: 2}
   m_Children:
   - {fileID: 216628006}
@@ -1811,9 +1809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f80e17bffee420c8a6dbaf11ccccf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDistance: 50
   maxStuck: 100
-  minRespawnDistance: 200
   player: {fileID: 419805560}
 --- !u!1 &330141520
 GameObject:
@@ -5308,7 +5304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &776753201
 Transform:
   m_ObjectHideFlags: 0
@@ -5316,7 +5312,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 776753200}
   m_LocalRotation: {x: 0, y: 0.8691958, z: 0, w: -0.4944681}
-  m_LocalPosition: {x: 122.7, y: 0.79, z: -12.3}
+  m_LocalPosition: {x: 173.3, y: 0.79, z: -53.4}
   m_LocalScale: {x: 2, y: 1.6, z: 2}
   m_Children:
   - {fileID: 264406620}
@@ -5453,9 +5449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f80e17bffee420c8a6dbaf11ccccf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDistance: 50
   maxStuck: 100
-  minRespawnDistance: 200
   player: {fileID: 419805560}
 --- !u!1 &788881134
 GameObject:
