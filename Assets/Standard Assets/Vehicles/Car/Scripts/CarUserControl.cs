@@ -19,22 +19,26 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void FixedUpdate()
         {
-
-#if UNITY_EDITOR || UNITY_WEBPLAYER
-            // pass the input to the car!
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-
-            float handbrake = Input.GetAxis("Jump");
-            m_Car.Move(h, v, v, handbrake);
-#else
+//
+//#if UNITY_EDITOR || UNITY_WEBPLAYER
+//            // pass the input to the car!
+//            float h = Input.GetAxis("Horizontal");
+//            float v = Input.GetAxis("Vertical");
+//
+//            float handbrake = Input.GetAxis("Jump");
+//            m_Car.Move(h, v, v, handbrake);
+//#else
 			if(Input.touchCount > 1){
 				m_Car.Move(0, -1, -1, 0);
 			}else{
-				Touch touch = Input.GetTouch(0);
-				m_Car.Move(((touch.position.x * 2 / screenWidth) - 1), 1, 1, 0);
+				if(Input.touchCount > 0) {
+					Touch touch = Input.GetTouch(0);	
+					m_Car.Move(((touch.position.x * 2 / screenWidth) - 1), 1, 1, 0);
+				}else {
+					m_Car.Move(0, 1, 1, 0);
+				}
 			}
-#endif
+//#endif
         }
     }
 }
