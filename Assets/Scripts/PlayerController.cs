@@ -41,14 +41,16 @@ public class PlayerController : MonoBehaviour {
 		print (h + ", " + v);
         m_Car.Move(h, v, v, handbrake);
 #else
-		if(Input.touchCount > 1){
-			m_Car.Move(0f, -1f, -1f, 0f);
-		}else{
-			if(Input.touchCount > 0) {
-				Touch touch = Input.GetTouch(0);	
-				m_Car.Move(((touch.position.x * 2 / screenWidth) - 1), 1f, 1f, 0f);
-			}else {
-				m_Car.Move(0f, 1f, 1f, 0f);
+		if(status) {
+			if(Input.touchCount > 1){
+				m_Car.Move(0f, -1f, -1f, 0f);
+			}else{
+				if(Input.touchCount > 0) {
+					Touch touch = Input.GetTouch(0);	
+					m_Car.Move(((touch.position.x * 2 / screenWidth) - 1), 1f, 1f, 0f);
+				}else {
+					m_Car.Move(0f, 1f, 1f, 0f);
+				}
 			}
 		}
 #endif
