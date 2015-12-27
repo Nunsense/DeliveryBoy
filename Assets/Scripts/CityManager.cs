@@ -91,11 +91,11 @@ public class CityManager : MonoBehaviour
 	{
 		map = new GameObject[mapW, mapH];
 		Transform trans;
-		GameObject[] blocksSet = blocksSets [Random.Range (0, blocksSets.Length - 1)].blockSet;
+		GameObject[] blocksSet = blocksSets [Random.Range (0, blocksSets.Length)].blockSet;
 
 		for (int i = 0; i < mapW; i++) {
 			for (int j = 0; j < mapH; j++) {
-				GameObject block = GameObject.Instantiate (blocksSet [Random.Range (0, blocksSet.Length - 1)]);
+				GameObject block = GameObject.Instantiate (blocksSet [Random.Range (0, blocksSet.Length)]);
 				trans = block.transform;
 				trans.parent = transform;
 				trans.position = new Vector3 (i * blockSize, 0, j * blockSize);
@@ -120,19 +120,6 @@ public class CityManager : MonoBehaviour
 		} 
 	}
 
-	public Vector3 PositionNearPlayer ()
-	{
-		Vector3 pos = player.transform.position;
-		pos.x += RandomSign (1) * blockSize;
-		pos.z += RandomSign (1) * blockSize;
-
-		pos.x = SnapToMap (pos.x);
-		pos.y = 0.1f;
-		pos.z = SnapToMap (pos.z);
-
-		return pos;
-	}
-
 	float RandomSign (float val)
 	{
 		return Random.value > .5 ? -val : val;
@@ -146,5 +133,18 @@ public class CityManager : MonoBehaviour
 	int MapPosition (float val)
 	{
 		return Mathf.CeilToInt (val / blockSize);
+	}
+
+	public Vector3 PositionNearPlayer ()
+	{
+		Vector3 pos = player.transform.position;
+		pos.x += RandomSign (blockSize + halfBlockSize);
+		pos.z += RandomSign (blockSize + halfBlockSize);
+
+		pos.x = SnapToMap (pos.x);
+		pos.y = 0.1f;
+		pos.z = SnapToMap (pos.z);
+
+		return pos;
 	}
 }

@@ -19,9 +19,6 @@ public class TruckController : MonoBehaviour {
 
 	public Transform motoTransform;
 
-	//Street Data
-	private StreetData currentStreet;
-
 	void Awake() {
 		rb = GetComponent<Rigidbody> ();
 	}
