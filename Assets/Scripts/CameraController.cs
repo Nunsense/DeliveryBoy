@@ -5,24 +5,16 @@ public class CameraController : MonoBehaviour {
 	public float smoothing = 15f;
 	//private GameObject cameraTarget;
 	public Transform truckTransform;
+	public int height = 300, x = 0, y = 0;
 	Vector3 offset;
 
 	void Start () {
-		GetTarget ("Player");
+		offset = new Vector3 (x, height, y);
 	}
 
 	void LateUpdate() {
 		MoveCameraPos();
 	}
-
-	void GetTarget (string target) {
-//		cameraTarget = GameObject.FindGameObjectWithTag (target);
-//
-//		if (cameraTarget) {
-//			truckTransform = cameraTarget.transform;
-		offset = transform.position - truckTransform.position;
-//		 } else { Debug.LogWarning ("No Target for Camera to follow"); }
-	}// Get Camera Target
 
 	void MoveCameraPos () {
 		//if (cameraTarget) {

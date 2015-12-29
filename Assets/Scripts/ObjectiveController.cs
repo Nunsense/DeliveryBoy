@@ -9,7 +9,7 @@ public class ObjectiveController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		points = 0;
-		//Relocate ();
+		Relocate ();
 	}
 	
 	// Update is called once per frame

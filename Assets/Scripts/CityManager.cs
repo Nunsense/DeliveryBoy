@@ -1,42 +1,151 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 
-public class CityManager : MonoBehaviour {
-
-	public int blockSize = 34;
-	public GameObject player;
-	public GameObject[] blocks;
-
-	void Start () {
-		blocks = GameObject.FindGameObjectsWithTag("Block");
+public class CityManager : MonoBehaviour
+{
+	[System.Serializable]
+	public class BlocksSet
+	{
+		public GameObject[] blockSet;
 	}
 
-	void FixedUpdate () {
-		int carPositionX = Mathf.CeilToInt( player.transform.position.x / blockSize);
-		int carPositionZ = Mathf.CeilToInt( player.transform.position.z / blockSize);
-		foreach (GameObject block in blocks) {
-			int difX = Mathf.CeilToInt(Mathf.Abs ((block.transform.position.x / blockSize) - carPositionX));
-			int difZ = Mathf.CeilToInt(Mathf.Abs ((block.transform.position.z / blockSize) - carPositionZ));
-			if (difX > 2 || difZ > 2) {
-				//relocate block
-				RaycastHit hit;
-				Ray ray;
-				bool found = false;
-				for (int i = carPositionX - 2; !found && i <= carPositionX + 2; i++) {
-					for (int k = carPositionZ - 2; !found && k <= carPositionZ + 2; k++) {
-						//Debug.DrawRay(new Vector3(i*blockSize-17,-0.5f,k*blockSize), transform.up*10,Color.white,0.01f);
-						//print ("pos:" + i + ", " + k);
-						if (!(Physics.Raycast (new Vector3 (i * blockSize - 17, 5, k * blockSize), transform.up * -1, out hit, 10))) {
-							//relocate
-							block.transform.localPosition = new Vector3 ((i * blockSize) - 2, block.transform.position.y, (k * blockSize) + 2);
-							//print ("pos:" + ((i * blockSize) - 2) + ", " + ((k * blockSize) + 2));
-							found = true;
-						}// else {
-						//	print ("hit");
-						//}
-					}
-				}
+	public BlocksSet[] blocksSets;
+	public GameObject[] cops;
+
+	public int blockSize = 34;
+	public Transform player;
+
+	public int mapW;
+	public int mapH;
+
+	private float halfBlockSize;
+	private GameObject[,] map;
+	private int mapOffsetX = 0;
+	private int mapOffsetY = 0;
+	private float lastPlayerX;
+	private float lastPlayerZ;
+
+	void Awake ()
+	{
+		mapOffsetX = 0;
+		mapOffsetY = 0;
+	}
+
+	void Start ()
+	{
+		halfBlockSize = blockSize / 2f;
+		CreateMap ();
+		InitPlayer ();
+		InitCops ();
+	}
+
+	void FixedUpdate ()
+	{
+		float difX = player.position.x - lastPlayerX;
+		float difZ = player.position.z - lastPlayerZ;
+
+		if (difX < -blockSize) {
+			mapOffsetX--;
+			int mapXPos = ((mapOffsetX % mapW) + mapW) % mapW;
+			for (int j = 0; j < mapH; j++) {
+				GameObject block = map [mapXPos, j];
+				Vector3 pos = block.transform.position;
+				pos.x = mapOffsetX * blockSize;
+				block.transform.position = pos;
+			}
+			lastPlayerX = player.position.x;
+		} else if (difX > blockSize) {
+			mapOffsetX++;
+			int mapXPos = ((mapOffsetX % mapW) + mapW - 1) % mapW;
+			for (int j = 0; j < mapH; j++) {
+				GameObject block = map [mapXPos, j];
+				Vector3 pos = block.transform.position;
+				pos.x = (mapW - 1 + mapOffsetX) * blockSize;
+				block.transform.position = pos;
+			}
+			lastPlayerX = player.position.x;
+		} else if (difZ < -blockSize) {
+			mapOffsetY--;
+			int mapYPos = ((mapOffsetY % mapH) + mapH) % mapH;
+			for (int i = 0; i < mapW; i++) {
+				GameObject block = map [i, mapYPos];
+				Vector3 pos = block.transform.position;
+				pos.z = mapOffsetY * blockSize;
+				block.transform.position = pos;
+			}
+			lastPlayerZ = player.position.z;
+		} else if (difZ > blockSize) {
+			mapOffsetY++;
+			int mapYPos = ((mapOffsetY % mapH) + mapH - 1) % mapH;
+			for (int i = 0; i < mapW; i++) {
+				GameObject block = map [i, mapYPos];
+				Vector3 pos = block.transform.position;
+				pos.z = (mapH - 1 + mapOffsetY) * blockSize;
+				block.transform.position = pos;
+			}
+			lastPlayerZ = player.position.z;
+		}
+	}
+
+	void CreateMap ()
+	{
+		map = new GameObject[mapW, mapH];
+		Transform trans;
+		GameObject[] blocksSet = blocksSets [Random.Range (0, blocksSets.Length)].blockSet;
+
+		for (int i = 0; i < mapW; i++) {
+			for (int j = 0; j < mapH; j++) {
+				GameObject block = GameObject.Instantiate (blocksSet [Random.Range (0, blocksSet.Length)]);
+				trans = block.transform;
+				trans.parent = transform;
+				trans.position = new Vector3 (i * blockSize, 0, j * blockSize);
+				map [i, j] = block;
 			}
 		}
+	}
+
+	void InitPlayer ()
+	{
+		player.position = new Vector3 ((mapW / 2) * blockSize, 0, (mapH / 2) * blockSize);	
+
+		lastPlayerX = player.position.x;
+		lastPlayerZ = player.position.z;
+	}
+
+	void InitCops ()
+	{
+		for (int i = 0; i < 3; i++) {
+			GameObject cop = GameObject.Instantiate (cops [0]);
+			cop.transform.parent = transform;
+		} 
+	}
+
+	float RandomSign (float val)
+	{
+		return Random.value > .5 ? -val : val;
+	}
+
+	int SnapToMap (float val)
+	{
+		return MapPosition (val) * blockSize;
+	}
+
+	int MapPosition (float val)
+	{
+		return Mathf.CeilToInt (val / blockSize);
+	}
+
+	public Vector3 PositionNearPlayer ()
+	{
+		Vector3 pos = player.transform.position;
+		pos.x += RandomSign (blockSize + halfBlockSize);
+		pos.z += RandomSign (blockSize + halfBlockSize);
+
+		pos.x = SnapToMap (pos.x);
+		pos.y = 0.1f;
+		pos.z = SnapToMap (pos.z);
+
+		return pos;
 	}
 }
