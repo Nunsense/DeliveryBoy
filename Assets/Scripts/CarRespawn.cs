@@ -25,7 +25,7 @@ public class CarRespawn : MonoBehaviour {
 	}
 
 	void Update() {
-		if (transform.position.y < -1.5) {
+		if (transform.position.y < -1.5 || transform.position.y > 2.5) {
 			ResetPosition ();
 		}
 	}

@@ -9,7 +9,6 @@ public class ObjectiveController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		points = 0;
-		Relocate ();
 	}
 	
 	// Update is called once per frame
@@ -26,7 +25,7 @@ public class ObjectiveController : MonoBehaviour {
 		Relocate ();
 	}
 
-	void Relocate(){
+	public void Relocate(){
 		GameObject[] corners = GameObject.FindGameObjectsWithTag("Corner");
 		var index = Random.Range (0, (corners.Length - 1));
 		var position = corners [index].transform.position;
