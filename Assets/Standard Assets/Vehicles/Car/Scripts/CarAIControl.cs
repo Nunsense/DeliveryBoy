@@ -169,11 +169,11 @@ namespace UnityStandardAssets.Vehicles.Car
 
                 // feed input to the car controller.
 				RaycastHit hitLeft,hitRight;
-				Ray leftRay = new Ray(transform.position - transform.right * 1.3f, transform.forward);
-				Debug.DrawRay(transform.position - transform.right * 1.3f,transform.forward * 11,Color.white,0.01f);
+				Ray leftRay = new Ray(transform.position - transform.right * 1.3f + transform.up, transform.forward);
+				Debug.DrawRay(transform.position - transform.right * 1.3f + transform.up,transform.forward * 11,Color.white,0.01f);
 
-				Ray rightRay = new Ray(transform.position + transform.right * 1.3f, transform.forward);
-				Debug.DrawRay(transform.position + transform.right * 1.3f,transform.forward * 11,Color.white,0.01f);
+				Ray rightRay = new Ray(transform.position + transform.right * 1.3f + transform.up, transform.forward);
+				Debug.DrawRay(transform.position + transform.right * 1.3f + transform.up,transform.forward * 11,Color.white,0.01f);
 
 				if((Physics.Raycast(leftRay, out hitLeft, 11)) || (Physics.Raycast(rightRay, out hitRight, 11))) {//hit
 					if(hitLeft.collider == null || (hitLeft.collider.tag != null && !hitLeft.collider.CompareTag("Player"))) {

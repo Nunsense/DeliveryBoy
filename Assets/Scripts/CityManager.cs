@@ -115,9 +115,10 @@ public class CityManager : MonoBehaviour
 
 	void InitCops ()
 	{
-		for (int i = 0; i < 3; i++) {
-			GameObject cop = GameObject.Instantiate (cops [0]);
+		for (int i = 0; i < cops.Length; i++) {
+			GameObject cop = cops [i];
 			cop.transform.parent = transform;
+			cop.GetComponent<CarRespawn>().ResetPosition();
 		} 
 	}
 

@@ -8,10 +8,10 @@ public class CarRespawn : MonoBehaviour {
 	private GameObject[] streets;
 	private float collisionDistance = 0.1f;
 
-	CityManager city;
+	private CityManager city;
+	private Transform player;
 
 	public int maxStuck = 100;
-	public Transform player;
 
 	void Awake () {
 		counter = 0;

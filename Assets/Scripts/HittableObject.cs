@@ -23,7 +23,6 @@ public class HittableObject : MonoBehaviour
 	void OnCollisionEnter(Collision other)
      {
      	if (!isDead) {
-			Debug.Log(other.gameObject.tag);
 	 		if (other.gameObject.tag == "Player" || other.gameObject.tag == "Cop") {
 				StartCoroutine(Die());
 			}
