@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Buildings : MonoBehaviour {
+public class RandomBuildings : MonoBehaviour {
 	static int[] rotations = new int[] { 0, 90, 180, 270 };
 
 	void Start () {

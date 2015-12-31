@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour {
         float v = Input.GetAxis("Vertical");
 
         float handbrake = Input.GetAxis("Jump");
-		print (h + ", " + v);
+//		print (h + ", " + v);
         m_Car.Move(h, v, v, handbrake);
 #else
 		if(status) {
