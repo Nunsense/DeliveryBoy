@@ -538,13 +538,13 @@ Prefab:
       propertyPath: manager
       value: 
       objectReference: {fileID: 702435119}
-    - target: {fileID: 190496, guid: fb689f5cf7d3d4b5e9253ef641169ada, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 11464768, guid: fb689f5cf7d3d4b5e9253ef641169ada, type: 2}
-      propertyPath: m_ReverseTorque
-      value: 800
+      propertyPath: m_MaxHandbrakeTorque
+      value: 99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497512, guid: fb689f5cf7d3d4b5e9253ef641169ada, type: 2}
+      propertyPath: maxStuckTime
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fb689f5cf7d3d4b5e9253ef641169ada, type: 2}
@@ -729,6 +729,7 @@ Transform:
   - {fileID: 564913957}
   - {fileID: 1828093592}
   - {fileID: 400299218}
+  - {fileID: 808879202}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!114 &438953329
@@ -750,6 +751,7 @@ MonoBehaviour:
   - {fileID: 564913950}
   - {fileID: 1828093593}
   - {fileID: 400299219}
+  - {fileID: 808879203}
   blockSize: 34
   player: {fileID: 1199167773}
   mapW: 5
@@ -854,7 +856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &751369177
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1044,13 +1046,67 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &808879201
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 438953328}
+    m_Modifications:
+    - target: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 143.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 24.86829
+      objectReference: {fileID: 0}
+    - target: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 32.76501
+      objectReference: {fileID: 0}
+    - target: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0.9997807
+      objectReference: {fileID: 0}
+    - target: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.020942187
+      objectReference: {fileID: 0}
+    - target: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 11454004, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
       propertyPath: m_CarDriveType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 195498, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+      propertyPath: m_Name
+      value: Cop (3)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &808879202 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 437548, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+  m_PrefabInternal: {fileID: 808879201}
+--- !u!1 &808879203 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 195498, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
+  m_PrefabInternal: {fileID: 808879201}
 --- !u!1 &944632737
 GameObject:
   m_ObjectHideFlags: 0

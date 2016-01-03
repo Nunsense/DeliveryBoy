@@ -5,12 +5,15 @@ using UnityStandardAssets.Vehicles.Car;
 
 public class PlayerController : MonoBehaviour {
 
-	private Vector3 lastPosition;
-	public float distance = 0.5f;
-	private bool status = true;
 	public LevelManager manager;
+	public float maxStuckTime = 3f;
+
+	private float stuckTimerCount;
+	private Vector3 lastPosition;
+	private bool status = true;
 	private int screenWidth;
 
+	private int copsTouchingCount;
 	private CarController m_Car; // the car controller we want to use
 
 
@@ -21,6 +24,10 @@ public class PlayerController : MonoBehaviour {
 		screenWidth = Screen.width;
 	}
 
+	void Start () {
+		stuckTimerCount = 0;
+		copsTouchingCount = 0;
+	}
 
 	private void FixedUpdate()
 	{
@@ -56,13 +63,30 @@ public class PlayerController : MonoBehaviour {
 #endif
 	}
 
-	void OnCollisionStay(Collision collision) {
-		if (collision.collider.CompareTag("Cop") && 
-			(Vector3.Distance(transform.position, lastPosition) <= distance )) {
-			status = false;
-			manager.Loose();
+	void Update() {
+		if (copsTouchingCount > 0 && m_Car.CurrentSpeed <= 5f) {
+			copsTouchingCount ++;
+			if (stuckTimerCount >= maxStuckTime) {
+				status = false;
+				manager.Loose();
+				stuckTimerCount = 0;
+			}
 		}
-//		print ("collisionstay");
-		lastPosition = transform.position;
+	}
+
+	void OnCollisionEnter(Collision collision) {
+		if (collision.collider.CompareTag("Cop")) {
+			copsTouchingCount ++;
+			Debug.Log("COPS: " + copsTouchingCount);
+		}
+	}
+
+	void OnCollisionExit(Collision collision) {
+		if (collision.collider.CompareTag("Cop")) {
+			if (--copsTouchingCount == 0) {
+			Debug.Log(" NO COPS");
+				stuckTimerCount = 0;
+			}
+		}
 	}
 }
