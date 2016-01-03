@@ -13,7 +13,6 @@
 		Pass {
 			SetTexture [_Mask] { combine texture }
 			SetTexture [_MainTex] { combine texture, previous }	
-			
 		}
 	} 
 }

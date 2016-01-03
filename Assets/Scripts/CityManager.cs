@@ -119,6 +119,7 @@ public class CityManager : MonoBehaviour
 			GameObject cop = cops [i];
 			cop.transform.parent = transform;
 			cop.GetComponent<CarRespawn>().ResetPosition();
+			cop.SetActive(false);
 		} 
 	}
 
