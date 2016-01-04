@@ -193,30 +193,28 @@ namespace UnityStandardAssets.Vehicles.Car
 					Ray rightRay = new Ray (transform.position + transform.right * 1.3f + transform.up, transform.forward);
 					Debug.DrawRay (transform.position + transform.right * 1.3f + transform.up, transform.forward * 11, Color.white, 0.01f);
 
-					if ((Physics.Raycast (leftRay, out hitLeft, 11)) || (Physics.Raycast (rightRay, out hitRight, 11))) {//hit
-						if (hitLeft.collider == null || (hitLeft.collider.tag != null && !hitLeft.collider.CompareTag ("Player"))) {
-							if (hitRight.collider == null || (hitRight.collider.tag != null && !hitRight.collider.CompareTag ("Player"))) {
-								if (hitLeft.distance <= hitRight.distance) {
+					if (Physics.Raycast (leftRay, out hitLeft, 11) || Physics.Raycast (rightRay, out hitRight, 11)) {//hit
+						if (hitLeft.collider == null || !hitLeft.collider.CompareTag ("Player")) {
+							if (hitRight.collider == null || !hitRight.collider.CompareTag ("Player")) {
+								m_CarController.Move (steer, accel, accel, 0f);
+							} else {
+								m_CarController.Move (-1f, accel, accel, 0f);
+							}
+						} else if (hitRight.collider == null || !hitRight.collider.CompareTag ("Player")) {
+							if (hitLeft.collider == null || !hitLeft.collider.CompareTag ("Player")) {
+								m_CarController.Move (steer, accel, accel, 0f);
+							} else {
+								m_CarController.Move (1f, accel, accel, 0f);
+							}
+						} else {
+							if (hitRight.collider.CompareTag ("Player") || hitLeft.collider.CompareTag ("Player")) {
+								m_CarController.Move (steer, accel, accel, 0f);
+							} else {
+								if (hitRight.distance <= hitLeft.distance) {
 									m_CarController.Move (-1f, accel, accel, 0f);
 								} else {
 									m_CarController.Move (1f, accel, accel, 0f);
 								}
-							} else {//player at right ray but not left
-								if (hitLeft.distance <= hitRight.distance) {
-									m_CarController.Move (-1f, accel, accel, 0f);
-								} else {
-									m_CarController.Move (steer, accel, accel, 0f);
-								}
-							}
-						} else {//is player at left ray
-							if (hitRight.collider == null || (hitRight.collider.tag != null && !hitRight.collider.tag.Equals ("Player"))) {
-								if (hitLeft.distance < hitRight.distance) {
-									m_CarController.Move (steer, accel, accel, 0f);
-								} else {
-									m_CarController.Move (-1f, accel, accel, 0f);
-								}
-							} else {
-								m_CarController.Move (steer, accel, accel, 0f);
 							}
 						}
 					} else {

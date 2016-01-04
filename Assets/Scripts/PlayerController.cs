@@ -64,27 +64,27 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update() {
-		if (copsTouchingCount > 0 && m_Car.CurrentSpeed <= 5f) {
-			copsTouchingCount ++;
+		if (copsTouchingCount > 0 && m_Car.CurrentSpeed <= 10f) {
+			stuckTimerCount += Time.deltaTime;
 			if (stuckTimerCount >= maxStuckTime) {
 				status = false;
 				manager.Loose();
 				stuckTimerCount = 0;
 			}
+		} else {
+			stuckTimerCount = 0;
 		}
 	}
 
 	void OnCollisionEnter(Collision collision) {
 		if (collision.collider.CompareTag("Cop")) {
 			copsTouchingCount ++;
-			Debug.Log("COPS: " + copsTouchingCount);
 		}
 	}
 
 	void OnCollisionExit(Collision collision) {
 		if (collision.collider.CompareTag("Cop")) {
 			if (--copsTouchingCount == 0) {
-			Debug.Log(" NO COPS");
 				stuckTimerCount = 0;
 			}
 		}

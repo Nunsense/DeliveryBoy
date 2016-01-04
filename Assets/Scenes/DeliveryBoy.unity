@@ -538,14 +538,6 @@ Prefab:
       propertyPath: manager
       value: 
       objectReference: {fileID: 702435119}
-    - target: {fileID: 11464768, guid: fb689f5cf7d3d4b5e9253ef641169ada, type: 2}
-      propertyPath: m_MaxHandbrakeTorque
-      value: 99999
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497512, guid: fb689f5cf7d3d4b5e9253ef641169ada, type: 2}
-      propertyPath: maxStuckTime
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fb689f5cf7d3d4b5e9253ef641169ada, type: 2}
   m_IsPrefabParent: 0
@@ -1942,10 +1934,6 @@ Prefab:
     - target: {fileID: 195498, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
       propertyPath: m_Name
       value: Cop (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 11454004, guid: 0030148d1678e485392f142c9fa014f3, type: 2}
-      propertyPath: m_CarDriveType
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0030148d1678e485392f142c9fa014f3, type: 2}

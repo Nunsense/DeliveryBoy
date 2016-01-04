@@ -39,6 +39,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 484002}
+  - 81: {fileID: 8188724}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -891,6 +892,13 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.81, y: 2, z: 6}
   m_Center: {x: 0, y: 1.5, z: -0.19}
+--- !u!81 &8188724
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118814}
+  m_Enabled: 1
 --- !u!114 &11424570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -966,7 +974,7 @@ MonoBehaviour:
   m_TractionControl: 1
   m_FullTorqueOverAllWheels: 1000
   m_ReverseTorque: 150
-  m_MaxHandbrakeTorque: 999
+  m_MaxHandbrakeTorque: 99999
   m_Downforce: 200
   m_SpeedType: 0
   m_Topspeed: 60
@@ -984,8 +992,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d208f3aee8d4c4bbfa6476f95c1b911e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 0.1
   manager: {fileID: 0}
+  maxStuckTime: 2
 --- !u!146 &14616370
 WheelCollider:
   m_ObjectHideFlags: 1
