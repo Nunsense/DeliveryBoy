@@ -5,12 +5,15 @@ using UnityStandardAssets.Vehicles.Car;
 
 public class PlayerController : MonoBehaviour {
 
-	private Vector3 lastPosition;
-	public float distance = 0.5f;
-	private bool status = true;
 	public LevelManager manager;
+	public float maxStuckTime = 3f;
+
+	private float stuckTimerCount;
+	private Vector3 lastPosition;
+	private bool status = true;
 	private int screenWidth;
 
+	private int copsTouchingCount;
 	private CarController m_Car; // the car controller we want to use
 
 
@@ -21,6 +24,10 @@ public class PlayerController : MonoBehaviour {
 		screenWidth = Screen.width;
 	}
 
+	void Start () {
+		stuckTimerCount = 0;
+		copsTouchingCount = 0;
+	}
 
 	private void FixedUpdate()
 	{
@@ -38,7 +45,7 @@ public class PlayerController : MonoBehaviour {
         float v = Input.GetAxis("Vertical");
 
         float handbrake = Input.GetAxis("Jump");
-		print (h + ", " + v);
+//		print (h + ", " + v);
         m_Car.Move(h, v, v, handbrake);
 #else
 		if(status) {
@@ -56,13 +63,30 @@ public class PlayerController : MonoBehaviour {
 #endif
 	}
 
-	void OnCollisionStay(Collision collision) {
-		if (collision.collider.CompareTag("Cop") && 
-			(Vector3.Distance(transform.position, lastPosition) <= distance )) {
-			status = false;
-			manager.Loose();
+	void Update() {
+		if (copsTouchingCount > 0 && m_Car.CurrentSpeed <= 10f) {
+			stuckTimerCount += Time.deltaTime;
+			if (stuckTimerCount >= maxStuckTime) {
+				status = false;
+				manager.Loose();
+				stuckTimerCount = 0;
+			}
+		} else {
+			stuckTimerCount = 0;
 		}
-//		print ("collisionstay");
-		lastPosition = transform.position;
+	}
+
+	void OnCollisionEnter(Collision collision) {
+		if (collision.collider.CompareTag("Cop")) {
+			copsTouchingCount ++;
+		}
+	}
+
+	void OnCollisionExit(Collision collision) {
+		if (collision.collider.CompareTag("Cop")) {
+			if (--copsTouchingCount == 0) {
+				stuckTimerCount = 0;
+			}
+		}
 	}
 }

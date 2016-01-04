@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.Vehicles.Car;
 
 public class CarRespawn : MonoBehaviour {
 
 	// Use this for initialization
-	private int counter;
+	private float stuckTimerCount;
 	private GameObject[] streets;
 	private float collisionDistance = 0.1f;
 
-	CityManager city;
+	private CityManager city;
+	private CarController controller;
+	private Transform player;
 
-	public int maxStuck = 100;
-	public Transform player;
+	public float maxStuckTime = 3f;
 
 	void Awake () {
-		counter = 0;
+		stuckTimerCount = 0;
 		city = GameObject.FindObjectOfType<CityManager>();
+		controller = GetComponent<CarController> ();
 		player = GameObject.FindGameObjectWithTag("Player").transform;
 		GetComponentInChildren<UnityStandardAssets.Vehicles.Car.CarAIControl>().SetTarget(player);
 	}
@@ -31,10 +34,16 @@ public class CarRespawn : MonoBehaviour {
 	}
 
 	void OnCollisionStay (Collision other) {
-		if (other.transform != player) {
-			++counter;
-			if (counter >= maxStuck) ResetPosition ();
-		} else  { counter = 0; }
+		if (other.transform != player && controller.CurrentSpeed <= 2f) {
+			if (stuckTimerCount == 0) {
+				stuckTimerCount = Time.time;
+			} else if (Time.time - stuckTimerCount >= maxStuckTime) {
+				ResetPosition ();
+				stuckTimerCount = 0;
+			}
+		} else {
+			stuckTimerCount = 0;
+		}
 	}//collision stay
 
 	public void ResetPosition () {
@@ -42,6 +51,6 @@ public class CarRespawn : MonoBehaviour {
 		//		Debug.Log(newPos);
 		transform.position = newPos;
 		transform.rotation = Quaternion.LookRotation (Vector3.forward);
-		counter = 0;
+		stuckTimerCount = 0;
 	}//reset Position
 }
