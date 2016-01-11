@@ -26,7 +26,7 @@ GameObject:
   - 146: {fileID: 14633442}
   m_Layer: 0
   m_Name: wcBR
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ GameObject:
   - 146: {fileID: 14689780}
   m_Layer: 0
   m_Name: wcFL
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,7 +108,7 @@ GameObject:
   - 146: {fileID: 14616370}
   m_Layer: 0
   m_Name: wcBL
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -179,7 +179,7 @@ GameObject:
   - 146: {fileID: 14626466}
   m_Layer: 0
   m_Name: wcFR
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -278,7 +278,7 @@ GameObject:
   - 33: {fileID: 3352748}
   - 23: {fileID: 2370010}
   - 114: {fileID: 11453052}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: MinimapArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,9 +325,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 190496}
-  m_LocalRotation: {x: 0.14954975, y: 0.6911113, z: -0.69111145, w: 0.14954972}
-  m_LocalPosition: {x: 0.0000000099873, y: 31.1, z: -0.0000019073}
-  m_LocalScale: {x: 55.843014, y: 59.14409, z: 44.014202}
+  m_LocalRotation: {x: -0.7070412, y: 0.009625763, z: -0.009625703, w: -0.7070413}
+  m_LocalPosition: {x: 0, y: 0.65, z: 0}
+  m_LocalScale: {x: 8.21123, y: 11.286005, z: 7.9756923}
   m_Children: []
   m_Father: {fileID: 482578}
   m_RootOrder: 0
@@ -944,7 +944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55bc6dabc8eb0491d883c9d6fbb2c972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  car: {fileID: 0}
+  car: {fileID: 482578}
   objective: {fileID: 0}
 --- !u!114 &11464768
 MonoBehaviour:
@@ -972,8 +972,8 @@ MonoBehaviour:
   m_MaximumSteerAngle: 35
   m_SteerHelper: 0.5
   m_TractionControl: 1
-  m_FullTorqueOverAllWheels: 1000
-  m_ReverseTorque: 150
+  m_FullTorqueOverAllWheels: 1500
+  m_ReverseTorque: 250
   m_MaxHandbrakeTorque: 99999
   m_Downforce: 200
   m_SpeedType: 0
@@ -1011,11 +1011,11 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.8
-    m_ExtremumValue: 1
+    m_ExtremumSlip: 0.2
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 0.8
-    m_Stiffness: 1
+    m_Stiffness: 0.5
   m_SidewaysFriction:
     m_ExtremumSlip: 0.8
     m_ExtremumValue: 1
@@ -1040,11 +1040,11 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.8
-    m_ExtremumValue: 1
+    m_ExtremumSlip: 0.2
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 0.8
-    m_Stiffness: 1
+    m_Stiffness: 0.5
   m_SidewaysFriction:
     m_ExtremumSlip: 0.8
     m_ExtremumValue: 1
@@ -1069,11 +1069,11 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.8
-    m_ExtremumValue: 1
+    m_ExtremumSlip: 0.2
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 0.8
-    m_Stiffness: 1
+    m_Stiffness: 0.5
   m_SidewaysFriction:
     m_ExtremumSlip: 0.8
     m_ExtremumValue: 1
@@ -1098,11 +1098,11 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.8
-    m_ExtremumValue: 1
+    m_ExtremumSlip: 0.2
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 0.8
-    m_Stiffness: 1
+    m_Stiffness: 0.5
   m_SidewaysFriction:
     m_ExtremumSlip: 0.8
     m_ExtremumValue: 1
