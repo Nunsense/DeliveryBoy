@@ -50,7 +50,7 @@ namespace UnityStandardAssets.Vehicles.Car
         public float CurrentSteerAngle{ get { return m_SteerAngle; }}
         public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
         public float MaxSpeed{get { return m_Topspeed; }}
-        public float Revs { get; private set; }
+        public float Revs { get; set; }
         public float AccelInput { get; private set; }
 
         // Use this for initialization
@@ -166,6 +166,10 @@ namespace UnityStandardAssets.Vehicles.Car
 
             AddDownForce();
             TractionControl();
+
+			if (CurrentSpeed > 0 && CurrentSpeed < 1 && accel > 0) {
+				m_Rigidbody.velocity = m_Rigidbody.velocity * 4;
+			}
         }
 
 
@@ -196,8 +200,9 @@ namespace UnityStandardAssets.Vehicles.Car
             float thrustTorque;
             switch (m_CarDriveType)
             {
-                case CarDriveType.FourWheelDrive:
-                    thrustTorque = accel * (m_CurrentTorque / 4f);
+			case CarDriveType.FourWheelDrive:
+				thrustTorque = accel * (m_CurrentTorque / 4f);
+				print ("torque: " + thrustTorque);
                     for (int i = 0; i < 4; i++)
                     {
                         m_WheelColliders[i].motorTorque = thrustTorque;

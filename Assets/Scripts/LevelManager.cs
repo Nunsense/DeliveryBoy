@@ -4,7 +4,7 @@ using System.Collections;
 public class LevelManager : MonoBehaviour {
 
 	public float autoLoadNextLevelAfter;
-	public GameObject canvasUI, canvasRestart,canvasCounter;
+	public GameObject canvasUI, canvasRestart,canvasCounter,btnShare,btnContinue, snoop;
 	
 	void Start () {
 		PauseLevel ();
@@ -45,10 +45,25 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public void PauseLevel(){
+		snoop.SetActive (false);
+		btnShare.SetActive (false);
+		btnContinue.SetActive (true);
+		canvasUI.SetActive (false);
+		canvasRestart.SetActive (true);
 		Time.timeScale = 0;
 	}
 
+	public void Continue(){
+		canvasCounter.SetActive(true);
+		canvasUI.SetActive (false);
+		canvasRestart.SetActive (false);
+		Time.timeScale = 1;
+	}
+
 	public void Loose(){
+		snoop.SetActive (true);
+		btnShare.SetActive (false);
+		btnContinue.SetActive (false);
 		canvasUI.SetActive (false);
 		canvasRestart.SetActive (true);
 		//Time.timeScale = 0;

@@ -8,16 +8,18 @@ public class ObjectiveController : MonoBehaviour {
 	public Text pointsField;
 	public Text timeField;
 	public float timeFactor = 0.2f;
-	private bool status = true;
+	private bool status;
 	private GameObject cube, circle;
 	private Vector3 lastPosition;
 	private float time;
 	// Use this for initialization
 	void Start () {
+		status = true;
 		points = 0;
 		circle = transform.Find("Circle").gameObject;
 		circle.SetActive (false);
 		cube = transform.Find("Cube").gameObject;
+		timeField.gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame
